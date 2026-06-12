@@ -6,9 +6,11 @@ name: Deploy to Cloudflare Pages
 # Requires two repo secrets:
 #   CLOUDFLARE_API_TOKEN   — a token with the "Cloudflare Pages: Edit" permission
 #   CLOUDFLARE_ACCOUNT_ID  — the Query Farm account id
+#
+# Manual-only for now: GitHub Pages (gh-pages.yml) is the temporary host while the
+# Cloudflare Pages project doesn't exist yet. Once it's created and the secrets are
+# set, add `push: { branches: [main] }` here to auto-deploy to Cloudflare.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

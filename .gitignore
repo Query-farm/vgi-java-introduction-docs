@@ -10,5 +10,8 @@ examples/test/sql/        # staged copy for `uvx haybarn-unittest` (generated)
 *.log
 .DS_Store
 
+# Playwright MCP scratch (snapshots, screenshots) — tooling output, not the site
+.playwright-mcp/
+
 # local scratch: standalone icon-design preview, not part of the site
 function-kind-icons.html

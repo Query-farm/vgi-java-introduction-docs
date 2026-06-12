@@ -4,11 +4,16 @@ import { defineConfig } from 'vitepress'
 const HOSTNAME = 'https://vgi-java-introduction.query.farm'
 const OG_IMAGE = `${HOSTNAME}/og-image.png`
 
+// Sub-path base for project hosting (e.g. GitHub Pages). Empty => served at root
+// (Cloudflare custom domain). Set DOCS_BASE='/repo/' for a project Pages deploy.
+const BASE = process.env.DOCS_BASE || '/'
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'VGI for Java',
   description:
     'Serve Haybarn / DuckDB catalogs and functions from Java over Apache Arrow IPC.',
+  base: BASE,
   lang: 'en-US',
   cleanUrls: true,
   lastUpdated: true,
@@ -24,7 +29,7 @@ export default defineConfig({
   // Site-wide tags. Per-page og:title/og:description/og:url/canonical are added
   // in transformPageData below.
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/vgi-logo.png' }],
+    ['link', { rel: 'icon', type: 'image/png', href: `${BASE}vgi-logo.png` }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'VGI for Java' }],
     ['meta', { property: 'og:image', content: OG_IMAGE }],

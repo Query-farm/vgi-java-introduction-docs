@@ -48,7 +48,8 @@ functions — to a DuckDB engine, over **Apache Arrow IPC**.
 
 - Columnar end to end — your code sees whole Arrow **vectors**, not rows
 - Use the **JVM ecosystem** from SQL: parsers, ML, geo, pricing engines…
-- Process **isolation**; one worker can back many engines
+- Process **isolation**; one worker can back many engines — local, remote over
+  **HTTP**, even a **DuckDB-Wasm** page in the browser
 
 ---
 
@@ -119,8 +120,8 @@ dependencies {
 
 </div>
 
-No native libraries, no codegen. `./gradlew installDist` then produces a runnable
-worker script.
+Published on **Maven Central** — no native libraries, no codegen. `./gradlew
+installDist` then produces a runnable worker script.
 
 ---
 
@@ -146,11 +147,19 @@ layout: section
 
 # The five function kinds
 
-scalar · table · table-in-out · aggregate · buffering
+<KindGallery />
+
+<div class="text-center opacity-60 pt-6 text-sm">
+
+one shape language — learn the five, read any signature at a glance
+
+</div>
 
 ---
 
 # Scalar — row → row
+
+<KindIcon kind="scalar" :size="56" class="abs-tr mt-8 mr-8" />
 
 ```java
 public void compute(@Vector VarCharVector value, VarCharVector result) {
@@ -172,6 +181,8 @@ public void compute(@Vector VarCharVector value, VarCharVector result) {
 
 # Table — args → rows (streamed)
 
+<KindIcon kind="table" :size="56" class="abs-tr mt-8 mr-8" />
+
 ```java
 public final class Numbers extends CountdownTableFunction {
     @Override protected Schema outputSchema() { return OUTPUT_SCHEMA; }
@@ -179,7 +190,7 @@ public final class Numbers extends CountdownTableFunction {
     @Override public TableProducerState createProducer(TableInitParams p) {
         long count = ParameterExtractor.of(p.arguments())
                          .positional(0, "count").asLong().required();
-        return new NumbersState(new BatchState(count, 1000), /* filters */);
+        return new NumbersState(new BatchState(count, 2048), /* filters */);
     }
     // producer.produceTick(out, ctx): emit ONE batch per call, then out.finish()
 }
@@ -195,6 +206,8 @@ SELECT count(*) FROM (SELECT * FROM demo.numbers(1000000) LIMIT 7);  -- 7
 ---
 
 # Table-in-out — rows → rows, per batch
+
+<KindIcon kind="table-in-out" :size="56" class="abs-tr mt-8 mr-8" />
 
 ```java
 public void onInputBatch(AnnotatedBatch in, OutputCollector out, CallContext c) {
@@ -212,6 +225,8 @@ public void onInputBatch(AnnotatedBatch in, OutputCollector out, CallContext c) 
 ---
 
 # Aggregate — rows → one per group
+
+<KindIcon kind="aggregate" :size="56" class="abs-tr mt-8 mr-8" />
 
 ```java
 State newState();                                  // empty accumulator
@@ -233,6 +248,8 @@ rows ─update─▶ partial C ─┘
 ---
 
 # Buffering — all rows → rows (Sink + Source)
+
+<KindIcon kind="buffering" :size="52" class="abs-tr mt-8 mr-8" />
 
 ```java
 byte[]       process(VectorSchemaRoot batch, …);   // Sink: stash, return state_id
@@ -260,13 +277,13 @@ Two independent axes:
 ```java
 ExecutorService workers = Executors.newVirtualThreadPerTaskExecutor();
 ```
-→ one `launch:` worker serves many DuckDB processes at once. *Guard shared
+→ one `launch:` worker serves many engine processes at once. *Guard shared
 fields.*
 
 **Within a scan** — opt a table function into parallel scan threads
 
 ```java
-@Override public long maxWorkers() { return 8L; }   // default 1
+@Override public long maxWorkers() { return 4L; }   // default 1
 ```
 
 Aggregates parallelize **by construction** (that's what `combine` is for).
@@ -293,16 +310,65 @@ export VGI_RPC_SHM_SIZE_BYTES=67108864      # 64 MiB — enables it (client side
 
 ---
 
+# Benchmarks — measured, not claimed
+
+Isolating transport cost on an **Apple M3** (Haybarn 1.5.3, JDK 25), median of 9
+warm runs, 32 MB batches:
+
+| Workload | Inline | Shared memory | Speedup |
+|----------|-------:|--------------:|:-------:|
+| Scan 2B rows (16 GB, one-way) | 163M rows/s | 459M rows/s | **2.82×** |
+| Round-trip 200M rows (4.8 GB) | 23M rows/s | 61M rows/s | **2.62×** |
+
+- A table function of simple columns runs at **hundreds of millions of rows/s**;
+  a scalar doing real per-row string work, **tens of millions**
+- The win tracks how **transport-bound** you are — reproduce with `./bench.sh`
+
+---
+
+# Build it with a coding agent
+
+The repo ships an **agent pack** — point a coding agent at it and it adds a
+working function: registered, tested, verified.
+
+<div grid="~ cols-2 gap-4">
+
+<div>
+
+- **`AGENTS.md`** — orientation, conventions, the gotchas that bite
+- **`recipes/`** — one task per kind: goal, prompt, files, verification
+- **`skeletons/`** — a TODO-marked starting class per kind
+
+</div>
+
+<div>
+
+Verified end-to-end, **no local engine build**:
+
+```bash
+./gradlew installDist     # vgi from Central
+… | uvx haybarn-cli       # quick SQL check
+uvx haybarn-unittest …    # golden-file suite
+```
+
+</div>
+
+</div>
+
+A green run is the definition of done.
+
+---
+
 # Run it yourself
 
 ```bash
-git clone …/vgi-java-docs && cd vgi-java-docs/examples
-./run.sh                       # build + print the ATTACH SQL
+cd examples && ./gradlew installDist   # resolves vgi from Maven Central
+BIN=$PWD/build/install/vgi-java-examples/bin/vgi-java-examples
 ```
 
 ```sql
-INSTALL vgi FROM community; LOAD vgi;
-ATTACH 'demo' AS demo (TYPE vgi, LOCATION 'launch:/abs/path/bin/vgi-java-examples');
+INSTALL vgi FROM community; LOAD vgi;          -- or: pipe to `uvx haybarn-cli`, no install
+ATTACH 'demo' AS demo (TYPE vgi, LOCATION 'launch:<BIN>');
 SELECT demo.upper_case('hello');                       -- HELLO
 SELECT * FROM demo.numbers(5);                         -- 0..4
 SELECT g, demo.vgi_sum(v) FROM … GROUP BY g;           -- parallel aggregate
@@ -310,7 +376,7 @@ SELECT g, demo.vgi_sum(v) FROM … GROUP BY g;           -- parallel aggregate
 
 <div class="pt-8 opacity-70">
 
-Docs: the `docs/` site &middot; Code: `examples/` &middot;
-Full fixtures: `vgi-example-worker`
+Public & reproducible: **Maven Central** + `uvx` &middot; Docs site &middot;
+Code `examples/` &middot; Full fixtures `vgi-example-worker`
 
 </div>
