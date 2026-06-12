@@ -1,0 +1,14 @@
+node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+slides/.slidev/
+slides/.slidev-dist/
+slides/dist/
+examples/build/
+examples/.gradle/
+examples/test/sql/        # staged copy for `uvx haybarn-unittest` (generated)
+*.log
+.DS_Store
+
+# local scratch: standalone icon-design preview, not part of the site
+function-kind-icons.html

@@ -1,0 +1,23 @@
+{
+  "name": "vgi-java-introduction-docs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Introductory documentation, slides, and runnable examples for serving Haybarn/DuckDB functions from Java with VGI.",
+  "type": "module",
+  "scripts": {
+    "diagrams": "bash docs/diagrams/build.sh",
+    "icons": "bash docs/icons/build.sh",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "slides:dev": "slidev slides/slides.md",
+    "slides:build": "slidev build slides/slides.md --out ../docs/.vitepress/dist/slides --base /slides/",
+    "slides:export": "slidev export slides/slides.md"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^0.49.0",
+    "@slidev/theme-default": "^0.25.0",
+    "lucide-static": "^1.18.0",
+    "vitepress": "^1.6.3"
+  }
+}

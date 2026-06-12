@@ -1,0 +1,27 @@
+direction: right
+
+person: "SQL client\n(you · an app · a BI tool)" {
+  shape: person
+  style.stroke: "#1f6f78"
+}
+
+engine: "Database engine\n(Haybarn / DuckDB)" {
+  style.fill: "#eaf3f4"
+  style.stroke: "#1f6f78"
+  style.border-radius: 8
+}
+
+worker: "VGI worker(s)\n(your Java code)" {
+  style.fill: "#fbeceb"
+  style.stroke: "#c0392b"
+  style.border-radius: 8
+}
+
+person <-> engine: "SQL  ⇄  results" {
+  style.stroke: "#1f6f78"
+}
+
+engine <-> worker: "Arrow IPC over socket / pipe / HTTP\ncalls & scans  ⇄  Arrow batches" {
+  style.stroke: "#c0392b"
+  style.bold: true
+}

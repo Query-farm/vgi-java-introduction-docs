@@ -1,0 +1,140 @@
+/* Shrink fenced + imported code blocks so wide examples don't scroll
+   horizontally. Inline `code` spans keep their inherited size. */
+:root {
+  --vp-code-font-size: 12px;
+  --vp-code-line-height: 1.55;
+}
+
+.vp-doc div[class*='language-'] pre,
+.vp-doc div[class*='language-'] code {
+  font-size: var(--vp-code-font-size);
+  line-height: var(--vp-code-line-height);
+}
+
+/* Line-number gutter tracks the smaller code size. */
+.vp-doc div[class*='language-'] .line-numbers-wrapper {
+  font-size: var(--vp-code-font-size);
+  line-height: var(--vp-code-line-height);
+}
+
+/* On narrow viewports, shrink a touch more before falling back to scroll. */
+@media (max-width: 640px) {
+  :root {
+    --vp-code-font-size: 11px;
+  }
+}
+
+/* Dark-mode image switching. Pair a `.light-only` and a `.dark-only` image of
+   the same asset; only the one matching the active theme renders. VitePress
+   sets `.dark` on <html> for the dark theme. */
+.dark .light-only {
+  display: none;
+}
+html:not(.dark) .dark-only {
+  display: none;
+}
+
+/* "Built on" logo strip on the home page. Logos are normalized by height, not
+   width, and Arrow's near-square mark gets a larger height than DuckDB's wide
+   wordmark so the two read as optically balanced. */
+.built-on {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem 2.75rem;
+  margin: 3.5rem 0 1rem;
+}
+.built-on-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--vp-c-text-3);
+}
+.built-on a {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.built-on a:hover {
+  opacity: 1;
+}
+.built-on img {
+  width: auto;
+  display: block;
+}
+.built-on .logo-java img {
+  height: 84px;
+}
+.built-on .logo-arrow img {
+  height: 92px;
+}
+.built-on .logo-duckdb img {
+  height: 58px;
+}
+.built-on .logo-haybarn img {
+  height: 60px;
+  border-radius: 13px;
+}
+
+/* Site-wide footer injected via the layout-bottom slot (shows on every page,
+   unlike the built-in themeConfig.footer which is home-page only). */
+.global-footer {
+  border-top: 1px solid var(--vp-c-divider);
+  padding: 18px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+}
+.global-footer a {
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+}
+.global-footer a:hover {
+  color: var(--vp-c-brand-1);
+  text-decoration: underline;
+}
+
+/* Homepage benchmark stats row. */
+.home-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 28px 0;
+}
+.home-stats .stat {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  padding: 22px 18px;
+  text-align: center;
+  background: var(--vp-c-bg-soft);
+}
+.home-stats .stat-num {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--vp-c-brand-1);
+  font-variant-numeric: tabular-nums;
+}
+.home-stats .stat-label {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--vp-c-text-2);
+}
+@media (max-width: 640px) {
+  .home-stats { grid-template-columns: 1fr; }
+}
+
+/* The unit line (rows/s, faster) sits right under the big stat number. */
+.home-stats .stat-unit {
+  margin-top: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--vp-c-text-1);
+}
+.home-stats .stat .stat-label {
+  margin-top: 7px;
+}

@@ -1,0 +1,40 @@
+direction: right
+
+rows1: rows {
+  shape: text
+}
+rows2: rows {
+  shape: text
+}
+rows3: rows {
+  shape: text
+}
+
+a: "partial State\n(thread A)" {
+  style.fill: "#fbeceb"
+  style.stroke: "#c0392b"
+}
+b: "partial State\n(thread B)" {
+  style.fill: "#fbeceb"
+  style.stroke: "#c0392b"
+}
+c: "partial State\n(thread C)" {
+  style.fill: "#fbeceb"
+  style.stroke: "#c0392b"
+}
+
+merged: "merged State" {
+  style.fill: "#eaf3f4"
+  style.stroke: "#1f6f78"
+}
+result: "value" {
+  shape: text
+}
+
+rows1 -> a: update()
+rows2 -> b: update()
+rows3 -> c: update()
+a -> merged: combine()
+b -> merged: combine()
+c -> merged: combine()
+merged -> result: finalize()

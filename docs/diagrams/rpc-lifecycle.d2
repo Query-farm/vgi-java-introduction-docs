@@ -1,0 +1,25 @@
+shape: sequence_diagram
+
+engine: DuckDB / Haybarn {
+  style.fill: "#eaf3f4"
+  style.stroke: "#1f6f78"
+}
+worker: Java worker {
+  style.fill: "#fbeceb"
+  style.stroke: "#c0392b"
+}
+
+init: {
+  engine -> worker: "init"
+  worker -> engine: "catalog, functions, protocol + transport capabilities"
+}
+
+bind: "per call site" {
+  engine -> worker: "bind(argument types, input schema)"
+  worker -> engine: "output schema"
+}
+
+execute: {
+  engine -> worker: "execute — stream Arrow input batches"
+  worker -> engine: "stream Arrow output batches"
+}

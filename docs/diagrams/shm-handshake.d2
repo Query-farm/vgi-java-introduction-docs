@@ -1,0 +1,27 @@
+shape: sequence_diagram
+
+client: "DuckDB  (creates + owns the segment)" {
+  style.fill: "#eaf3f4"
+  style.stroke: "#1f6f78"
+}
+seg: "POSIX shm segment  (both processes mmap it)" {
+  style.fill: "#fef6e7"
+  style.stroke: "#caa53d"
+}
+worker: "Java worker" {
+  style.fill: "#fbeceb"
+  style.stroke: "#c0392b"
+}
+
+client -> worker: "init  { advertises segment name + size }"
+worker -> seg: "attach (mmap, read/write)"
+
+big: "for each large batch" {
+  worker -> seg: "write batch bytes into the segment"
+  worker -> client: "tiny pointer batch (offset + length) over the pipe"
+  client -> seg: "read bytes straight from the segment"
+}
+
+fallback: "tiny / dict-encoded / segment-full" {
+  worker -> client: "inline batch over the pipe (always correct)"
+}
