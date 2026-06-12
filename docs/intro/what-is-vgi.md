@@ -192,11 +192,11 @@ with a runnable example.
 
 | Kind | Shape | Example | Use it for |
 |------|-------|---------|------------|
-| [Scalar](/functions/scalar) | <KindIcon kind="scalar" size="30" /><br>row → row | `upper_case(s)` | per-row transforms |
-| [Table](/functions/table) | <KindIcon kind="table" size="30" /><br>args → rows | `numbers(n)` | generators, external scans |
-| [Table‑in‑out](/functions/table-in-out) | <KindIcon kind="table-in-out" size="30" /><br>rows → rows (streamed) | `echo(t)` | streaming relation transforms |
-| [Aggregate](/functions/aggregate) | <KindIcon kind="aggregate" size="30" /><br>rows → one per group | `vgi_sum(v)` | parallel reductions |
-| [Buffering](/functions/buffering) | <KindIcon kind="buffering" size="30" /><br>all rows → rows | `collect(t)` | sort / top-k / whole-relation work |
+| [Scalar](/function-kinds/scalar) | <KindIcon kind="scalar" size="30" /><br>row → row | `upper_case(s)` | per-row transforms |
+| [Table](/function-kinds/table) | <KindIcon kind="table" size="30" /><br>args → rows | `numbers(n)` | generators, external scans |
+| [Table‑in‑out](/function-kinds/table-in-out) | <KindIcon kind="table-in-out" size="30" /><br>rows → rows (streamed) | `echo(t)` | streaming relation transforms |
+| [Aggregate](/function-kinds/aggregate) | <KindIcon kind="aggregate" size="30" /><br>rows → one per group | `vgi_sum(v)` | parallel reductions |
+| [Buffering](/function-kinds/buffering) | <KindIcon kind="buffering" size="30" /><br>all rows → rows | `collect(t)` | sort / top-k / whole-relation work |
 
 The last three differ in *when* they can emit. A table-in-out function emits as
 each input batch arrives. An aggregate folds rows into per-group state and

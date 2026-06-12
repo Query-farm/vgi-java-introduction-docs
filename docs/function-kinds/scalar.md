@@ -130,4 +130,4 @@ outputs, binary packing, secret accessors — is exercised by
 [`BinaryPacket`](https://github.com/Query-farm/vgi-java/blob/main/vgi-example-worker/src/main/java/farm/query/vgi/example/scalar/BinaryPacketFunction.java),
 the geo centroid/distance trio, and more).
 
-Next: [table functions →](/functions/table)
+Next: [table functions →](/function-kinds/table)

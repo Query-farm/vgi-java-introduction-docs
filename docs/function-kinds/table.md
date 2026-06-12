@@ -112,4 +112,4 @@ branches — implement those directly. The
 `required_field_filter_paths` tables delegating to native `read_parquet`, and
 the multi-branch scan fixtures.
 
-Next: [table-in-out functions →](/functions/table-in-out)
+Next: [table-in-out functions →](/function-kinds/table-in-out)

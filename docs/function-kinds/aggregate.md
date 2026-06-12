@@ -81,4 +81,4 @@ Override `finalizeEmpty(result, rowIndex)` to control the empty-group result —
 aggregates: [`Avg`](https://github.com/Query-farm/vgi-java/blob/main/vgi-example-worker/src/main/java/farm/query/vgi/example/aggregate/AvgFunction.java) (a two-field running state), [`ListAgg`](https://github.com/Query-farm/vgi-java/blob/main/vgi-example-worker/src/main/java/farm/query/vgi/example/aggregate/ListAggFunction.java) (a growing list state),
 and [`Count`](https://github.com/Query-farm/vgi-java/blob/main/vgi-example-worker/src/main/java/farm/query/vgi/example/aggregate/CountFunction.java). They all follow the same four-method shape.
 
-Next: [buffering functions →](/functions/buffering)
+Next: [buffering functions →](/function-kinds/buffering)

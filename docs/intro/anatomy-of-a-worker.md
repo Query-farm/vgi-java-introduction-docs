@@ -8,7 +8,7 @@ Every VGI worker has the same three parts: a **builder** that registers your
 functions and the catalog metadata around them, a **transport** that carries the
 engine's calls in and your Arrow batches back, and the **functions** themselves.
 The functions are where your code goes, and they get a [page
-each](/functions/scalar). This page is the other two — the scaffolding that looks
+each](/function-kinds/scalar). This page is the other two — the scaffolding that looks
 the same in every worker you'll write.
 
 ## The builder
@@ -114,4 +114,4 @@ VGI uses Arrow's off-heap memory. Two rules cover almost everything:
 Get these wrong and you'll see Arrow allocator-leak errors at shutdown (the test
 JVM turns those into hard failures) — a useful early warning, not a silent bug.
 
-Next: write your first [scalar function →](/functions/scalar)
+Next: write your first [scalar function →](/function-kinds/scalar)

@@ -12,7 +12,7 @@ back — a batch-by-batch transform you'd rather express in Java than SQL:
 
 The defining property: a table-in-out function emits **per input batch**. It sees a batch,
 emits a batch, and never needs to hold the whole input. (When you *do* need the
-whole input — sort, top-k — use a [buffering function](/functions/buffering)
+whole input — sort, top-k — use a [buffering function](/function-kinds/buffering)
 instead.)
 
 ## The model
@@ -92,4 +92,4 @@ batch-index tagging, cancellation — is in
 - [`repeat_inputs`](https://github.com/Query-farm/vgi-java/blob/main/vgi-example-worker/src/main/java/farm/query/vgi/example/tableinout/RepeatInputsFunction.java) — emit each input batch N times.
 - [`echo_witness`](https://github.com/Query-farm/vgi-java/blob/main/vgi-example-worker/src/main/java/farm/query/vgi/example/tableinout/EchoWitnessFunction.java) — passthrough that also reports projection-pushdown witness columns.
 
-Next: [aggregate functions →](/functions/aggregate)
+Next: [aggregate functions →](/function-kinds/aggregate)

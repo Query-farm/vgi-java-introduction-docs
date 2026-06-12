@@ -8,7 +8,7 @@ description: "Buffering VGI functions see every input row before emitting — th
 
 A **buffering** (Sink + Source) function must see **all** of its input before it
 produces **any** output. That's the defining difference from a
-[table-in-out](/functions/table-in-out) function, which emits per input batch.
+[table-in-out](/function-kinds/table-in-out) function, which emits per input batch.
 Reach for buffering when the operation is inherently whole-relation: sort,
 top-k, median, dedup, or an aggregation that emits many rows.
 

@@ -78,7 +78,7 @@ SELECT count(*), count(DISTINCT n) FROM demo.numbers(10000000);
 -- 10000000, 10000000   ← every value once, no gaps
 ```
 
-The [`numbers`](/functions/table) example coordinates exactly this way; its
+The [`numbers`](/function-kinds/table) example coordinates exactly this way; its
 end-to-end test asserts `count == count(DISTINCT) == N` (and the exact sum) over a
 5M-row parallel scan. Only raise `maxWorkers()` once your producer partitions like
 this — the default of 1 needs no coordination. (`storage` also exposes a FIFO
@@ -89,7 +89,7 @@ queue, for handing out work items that aren't a simple contiguous range.)
 Aggregate functions are designed for parallel partial aggregation: the engine
 builds several partial `State`s on different threads and merges them with `combine()`.
 You don't opt in — you just make `combine` associative and commutative and keep
-`State` serializable. See [aggregates](/functions/aggregate).
+`State` serializable. See [aggregates](/function-kinds/aggregate).
 
 ## Buffering and parallel sinks
 
@@ -97,7 +97,7 @@ A buffering function's Sink phase (`process`) can be driven by multiple threads;
 that's why state lives in `params.storage()` rather than on the function. If your
 buffering logic needs ordered ingest, override `sinkOrderDependent()` (and
 `requiresInputBatchIndex()` to receive the engine's global batch index). See
-[buffering](/functions/buffering).
+[buffering](/function-kinds/buffering).
 
 ## A mental model
 

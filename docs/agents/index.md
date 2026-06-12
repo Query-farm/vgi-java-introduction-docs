@@ -22,15 +22,15 @@ project the recipes build into.
 ## Pick the kind
 
 The recipe an agent follows is chosen by the shape of the work. This is the same
-decision the [function pages](/functions/scalar) walk through, in one table:
+decision the [function pages](/function-kinds/scalar) walk through, in one table:
 
 | Kind | Base type | Shape | Build when… |
 |------|-----------|-------|-------------|
-| [scalar](/functions/scalar) | `ScalarFn` | row → row | one value in, one value out |
-| [table](/functions/table) | `CountdownTableFunction` | args → rows | generating or scanning rows |
-| [table-in-out](/functions/table-in-out) | `PassthroughTIOFunction` | rows → rows, **per batch** | streaming relation transform |
-| [aggregate](/functions/aggregate) | `AggregateFunction<State>` | rows → one per group | parallel reduction |
-| [buffering](/functions/buffering) | `TableBufferingFunction` | **all** rows → rows | sort / top-k / whole-relation |
+| [scalar](/function-kinds/scalar) | `ScalarFn` | row → row | one value in, one value out |
+| [table](/function-kinds/table) | `CountdownTableFunction` | args → rows | generating or scanning rows |
+| [table-in-out](/function-kinds/table-in-out) | `PassthroughTIOFunction` | rows → rows, **per batch** | streaming relation transform |
+| [aggregate](/function-kinds/aggregate) | `AggregateFunction<State>` | rows → one per group | parallel reduction |
+| [buffering](/function-kinds/buffering) | `TableBufferingFunction` | **all** rows → rows | sort / top-k / whole-relation |
 
 The decision rule for the three table-shaped kinds: emits per input batch →
 **table-in-out**; folds rows into per-group state → **aggregate**; must see every

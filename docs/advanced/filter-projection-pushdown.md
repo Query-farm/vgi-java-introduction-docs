@@ -23,7 +23,7 @@ moved more bytes than necessary.
 
 ## Filter & limit pushdown (table functions)
 
-The [`numbers`](/functions/table) example opts into filter and limit pushdown:
+The [`numbers`](/function-kinds/table) example opts into filter and limit pushdown:
 
 ```java
 @Override public FunctionMetadata metadata() {
@@ -56,8 +56,8 @@ pushed for a given query — a great debugging aid.
 
 ## Projection pushdown (table-in-out & buffering)
 
-For [table-in-out](/functions/table-in-out) and
-[buffering](/functions/buffering), the useful pushdown is **projection** — emit
+For [table-in-out](/function-kinds/table-in-out) and
+[buffering](/function-kinds/buffering), the useful pushdown is **projection** — emit
 only the columns the query selects:
 
 ```java
@@ -67,7 +67,7 @@ metadata().withPushdown(true, false, false)   // projection on
 The framework narrows your declared output schema to the requested columns. In a
 TIO exchange, `params.outputSchema()` reflects the narrowed set — select those
 columns by name when you build the output batch (the
-[echo example](/functions/table-in-out) does this). In a buffering finalize
+[echo example](/function-kinds/table-in-out) does this). In a buffering finalize
 producer, `BufferingFinalizeProducer.emitProjected` narrows each batch for you.
 
 When projection pushdown is on, no narrowing `PROJECTION` node is planned above

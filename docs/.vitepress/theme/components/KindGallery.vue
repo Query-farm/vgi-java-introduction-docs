@@ -13,7 +13,7 @@ import { KINDS } from './kinds.js'
       v-for="k in KINDS"
       :key="k.id"
       class="kind-gallery__card"
-      :href="`/functions/${k.id}`"
+      :href="`/function-kinds/${k.id}`"
       :style="{ '--kind': k.color }"
     >
       <KindIcon :kind="k.id" :size="46" class="kind-gallery__glyph" />

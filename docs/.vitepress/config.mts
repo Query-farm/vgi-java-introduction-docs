@@ -18,7 +18,7 @@ const SITE_DESCRIPTION =
 // Sidebar sections, used to build per-page BreadcrumbList structured data.
 const SECTIONS = {
   intro: { name: 'Introduction', path: 'intro/what-is-vgi' },
-  functions: { name: 'Function kinds', path: 'functions/scalar' },
+  'function-kinds': { name: 'Function kinds', path: 'function-kinds/scalar' },
   guides: { name: 'Guides', path: 'guides/catalog' },
   advanced: { name: 'Advanced', path: 'advanced/parallelism' },
   agents: { name: 'Coding agents', path: 'agents/' },
@@ -164,7 +164,7 @@ export default defineConfig({
 
     nav: [
       { text: 'Guide', link: '/intro/what-is-vgi' },
-      { text: 'Functions', link: '/functions/scalar' },
+      { text: 'Functions', link: '/function-kinds/scalar' },
       { text: 'Advanced', link: '/advanced/parallelism' },
       { text: 'Reference', link: '/reference/cli-and-env' },
       { text: 'Agents', link: '/agents/' },
@@ -186,11 +186,11 @@ export default defineConfig({
       {
         text: 'Function kinds',
         items: [
-          { text: 'Scalar', link: '/functions/scalar' },
-          { text: 'Table', link: '/functions/table' },
-          { text: 'Table-in-out', link: '/functions/table-in-out' },
-          { text: 'Aggregate', link: '/functions/aggregate' },
-          { text: 'Buffering', link: '/functions/buffering' },
+          { text: 'Scalar', link: '/function-kinds/scalar' },
+          { text: 'Table', link: '/function-kinds/table' },
+          { text: 'Table-in-out', link: '/function-kinds/table-in-out' },
+          { text: 'Aggregate', link: '/function-kinds/aggregate' },
+          { text: 'Buffering', link: '/function-kinds/buffering' },
         ],
       },
       {

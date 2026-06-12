@@ -12,15 +12,15 @@ and verify through the same public `uvx` loop.
 
 | Recipe | Kind | Builds |
 |--------|------|--------|
-| [add-scalar-function](https://github.com/Query-farm/vgi-java) | [scalar](/functions/scalar) | `reverse_string(VARCHAR) -> VARCHAR` |
-| [add-table-function](https://github.com/Query-farm/vgi-java) | [table](/functions/table) | `fibonacci(count) -> n` |
-| [add-table-in-out-function](https://github.com/Query-farm/vgi-java) | [table-in-out](/functions/table-in-out) | `drop_nulls(TABLE) -> *` |
-| [add-aggregate-function](https://github.com/Query-farm/vgi-java) | [aggregate](/functions/aggregate) | `vgi_max(BIGINT) -> BIGINT` |
-| [add-buffering-function](https://github.com/Query-farm/vgi-java) | [buffering](/functions/buffering) | `top_n(TABLE, n) -> *` |
+| [add-scalar-function](https://github.com/Query-farm/vgi-java) | [scalar](/function-kinds/scalar) | `reverse_string(VARCHAR) -> VARCHAR` |
+| [add-table-function](https://github.com/Query-farm/vgi-java) | [table](/function-kinds/table) | `fibonacci(count) -> n` |
+| [add-table-in-out-function](https://github.com/Query-farm/vgi-java) | [table-in-out](/function-kinds/table-in-out) | `drop_nulls(TABLE) -> *` |
+| [add-aggregate-function](https://github.com/Query-farm/vgi-java) | [aggregate](/function-kinds/aggregate) | `vgi_max(BIGINT) -> BIGINT` |
+| [add-buffering-function](https://github.com/Query-farm/vgi-java) | [buffering](/function-kinds/buffering) | `top_n(TABLE, n) -> *` |
 
 Before starting any recipe, an agent reads
 [`AGENTS.md`](https://github.com/Query-farm/vgi-java) and the matching
-[function page](/functions/scalar), then starts from the matching
+[function page](/function-kinds/scalar), then starts from the matching
 [skeleton](https://github.com/Query-farm/vgi-java).
 
 ## The shape of every recipe

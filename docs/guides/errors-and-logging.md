@@ -41,7 +41,7 @@ work. `ParameterExtractor` gives you typed, well-worded validation for free:
 
 For scalars, a `typeBound` on a `@Vector(any = true)` argument produces a
 SQL-typed bind error automatically, e.g.
-`double: value must be numeric (got VARCHAR)`. See [scalar](/functions/scalar).
+`double: value must be numeric (got VARCHAR)`. See [scalar](/function-kinds/scalar).
 
 A useful split: **bind** errors are for "this call can never work" (wrong types,
 missing args); **execution** errors are for "this data can't be processed"

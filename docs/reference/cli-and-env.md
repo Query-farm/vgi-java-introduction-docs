@@ -37,7 +37,7 @@ What you write in `ATTACH ... (TYPE vgi, LOCATION '<here>')`:
 | Variable | Purpose |
 |----------|---------|
 | `VGI_WORKER_STDERR` | append the worker's stderr to this file. The launcher dup2's `/dev/null` over fd 2, so set this to see crashes in `launch:` mode. |
-| `VGI_WORKER_SHARED_STORAGE` | function-state backend for [buffering](/functions/buffering) `storage`: `memory`, `sqlite` (default), or `cloudflare-do`. |
+| `VGI_WORKER_SHARED_STORAGE` | function-state backend for [buffering](/function-kinds/buffering) `storage`: `memory`, `sqlite` (default), or `cloudflare-do`. |
 | `VGI_WORKER_SQLITE_PATH` | path to the SQLite file when the backend is `sqlite`. |
 
 ### Shared memory ([details](/advanced/shared-memory))
