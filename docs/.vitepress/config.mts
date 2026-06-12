@@ -8,6 +8,23 @@ const OG_IMAGE = `${HOSTNAME}/og-image.png`
 // (Cloudflare custom domain). Set DOCS_BASE='/repo/' for a project Pages deploy.
 const BASE = process.env.DOCS_BASE || '/'
 
+// Set on the temporary GitHub Pages build so search engines don't index it and
+// compete with the canonical Cloudflare domain. Social/OG scrapers ignore this.
+const NOINDEX = !!process.env.DOCS_NOINDEX
+
+const SITE_DESCRIPTION =
+  'Expose Java libraries as DuckDB / Haybarn SQL functions and tables over Apache Arrow — scalar, table, table-in-out, aggregate, and buffering functions served from your own JVM process.'
+
+// Sidebar sections, used to build per-page BreadcrumbList structured data.
+const SECTIONS = {
+  intro: { name: 'Introduction', path: 'intro/what-is-vgi' },
+  functions: { name: 'Function kinds', path: 'functions/scalar' },
+  guides: { name: 'Guides', path: 'guides/catalog' },
+  advanced: { name: 'Advanced', path: 'advanced/parallelism' },
+  agents: { name: 'Coding agents', path: 'agents/' },
+  reference: { name: 'Reference', path: 'reference/cli-and-env' },
+}
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'VGI for Java',
@@ -35,10 +52,14 @@ export default defineConfig({
   // Site-wide tags. Per-page og:title/og:description/og:url/canonical are added
   // in transformPageData below.
   head: [
+    ...(NOINDEX
+      ? [['meta', { name: 'robots', content: 'noindex, follow' }] as [string, Record<string, string>]]
+      : []),
     ['link', { rel: 'icon', type: 'image/png', href: `${BASE}vgi-logo.png` }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'VGI for Java' }],
     ['meta', { property: 'og:image', content: OG_IMAGE }],
+    ['meta', { property: 'og:image:type', content: 'image/png' }],
     ['meta', { property: 'og:image:width', content: '1280' }],
     ['meta', { property: 'og:image:height', content: '640' }],
     ['meta', { property: 'og:image:alt', content: 'VGI — Vector Gateway Interface' }],
@@ -60,7 +81,71 @@ export default defineConfig({
     const description =
       pageData.description ||
       pageData.frontmatter.description ||
-      'Serve Haybarn / DuckDB catalogs and functions from Java over Apache Arrow IPC.'
+      SITE_DESCRIPTION
+
+    // Richer <title> on the home page (the og:title above stays the brand) — the
+    // title tag is a primary SERP signal, so spell out what the project is.
+    if (isHome) {
+      pageData.title = 'VGI for Java — Java functions & tables for DuckDB / Haybarn'
+      pageData.titleTemplate = false
+    }
+
+    // JSON-LD structured data: a WebSite + Organization + SoftwareSourceCode
+    // graph on the home page, a BreadcrumbList on every inner page.
+    const jsonLd = isHome
+      ? {
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'WebSite',
+              '@id': `${HOSTNAME}/#website`,
+              url: `${HOSTNAME}/`,
+              name: 'VGI for Java',
+              description: SITE_DESCRIPTION,
+              inLanguage: 'en-US',
+              publisher: { '@id': `${HOSTNAME}/#org` },
+            },
+            {
+              '@type': 'Organization',
+              '@id': `${HOSTNAME}/#org`,
+              name: 'Query Farm',
+              url: 'https://query.farm',
+              logo: `${HOSTNAME}/vgi-logo.png`,
+            },
+            {
+              '@type': 'SoftwareSourceCode',
+              name: 'VGI for Java',
+              description: SITE_DESCRIPTION,
+              url: `${HOSTNAME}/`,
+              programmingLanguage: 'Java',
+              runtimePlatform: 'JVM (JDK 21+)',
+              codeRepository: 'https://github.com/Query-farm/vgi-java',
+              author: { '@id': `${HOSTNAME}/#org` },
+              keywords:
+                'VGI, DuckDB, Haybarn, Apache Arrow, Java, SQL functions, table functions, DuckDB extension',
+            },
+          ],
+        }
+      : (() => {
+          const section = SECTIONS[path.split('/')[0] as keyof typeof SECTIONS]
+          const crumbs: { name: string; url?: string }[] = [
+            { name: 'Home', url: `${HOSTNAME}/` },
+          ]
+          if (section && section.path !== path) {
+            crumbs.push({ name: section.name, url: `${HOSTNAME}/${section.path}` })
+          }
+          crumbs.push({ name: pageData.title })
+          return {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: crumbs.map((c, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: c.name,
+              ...(c.url ? { item: c.url } : {}),
+            })),
+          }
+        })()
 
     pageData.frontmatter.head ??= []
     pageData.frontmatter.head.push(
@@ -70,6 +155,7 @@ export default defineConfig({
       ['meta', { name: 'twitter:title', content: title }],
       ['meta', { name: 'twitter:description', content: description }],
       ['link', { rel: 'canonical', href: canonical }],
+      ['script', { type: 'application/ld+json' }, JSON.stringify(jsonLd)],
     )
   },
 

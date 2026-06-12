@@ -35,6 +35,9 @@ jobs:
           # og:image / og:url / canonical / sitemap point at the live temp host,
           # so social previews resolve (the real domain isn't deployed yet).
           DOCS_HOSTNAME: https://query-farm.github.io/vgi-java-introduction-docs
+          # Keep this temporary host out of search indexes so it doesn't compete
+          # with the canonical Cloudflare domain. OG/social scrapers ignore it.
+          DOCS_NOINDEX: '1'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist

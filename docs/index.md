@@ -15,11 +15,7 @@ hero:
       link: /intro/quickstart
 
 features:
-  - title: Agents help you build
-    details: The point is your Java, reachable from SQL — coding agents just get you there faster. The repo ships an agent pack (AGENTS.md, a recipe per kind, and skeletons) so an agent can add a function and verify it end-to-end against a real engine.
-    link: /agents/
-    linkText: The agent pack
-  - title: An extension, in Java
+  - title: An extension for the database, but in Java
     details: A separate Java process the engine attaches and calls like a built-in — your functions and tables, served over Apache Arrow. An alternative to writing a C++ extension, without leaving the JVM or its libraries.
     link: /intro/what-is-vgi
     linkText: What is VGI?
@@ -27,6 +23,10 @@ features:
     details: Plain Java on JDK 21–25, reached over a Unix socket, a pipe, or HTTP — across the network, or even from a browser via WebAssembly.
     link: /intro/anatomy-of-a-worker#local-remote-or-in-the-browser
     linkText: Transports
+  - title: Coding Agents can help you build
+    details: The point is your Java, reachable from SQL — coding agents just get you there faster. The repo ships an agent pack (AGENTS.md, a recipe per kind, and skeletons) so an agent can add a function and verify it end-to-end against a real engine.
+    link: /agents/
+    linkText: The agent pack
 ---
 
 <div class="built-on">
