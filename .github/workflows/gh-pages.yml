@@ -32,6 +32,9 @@ jobs:
       - run: npm run docs:build
         env:
           DOCS_BASE: /vgi-java-introduction-docs/
+          # og:image / og:url / canonical / sitemap point at the live temp host,
+          # so social previews resolve (the real domain isn't deployed yet).
+          DOCS_HOSTNAME: https://query-farm.github.io/vgi-java-introduction-docs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist

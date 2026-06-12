@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 // Canonical origin for absolute URLs (og:url, canonical links, sitemap).
-const HOSTNAME = 'https://vgi-java-introduction.query.farm'
+const HOSTNAME = process.env.DOCS_HOSTNAME || 'https://vgi-java-introduction.query.farm'
 const OG_IMAGE = `${HOSTNAME}/og-image.png`
 
 // Sub-path base for project hosting (e.g. GitHub Pages). Empty => served at root
@@ -18,8 +18,14 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
 
-  // Emit sitemap.xml at build time (referenced from public/robots.txt).
-  sitemap: { hostname: HOSTNAME },
+  // Emit sitemap.xml at build time (referenced from public/robots.txt). The
+  // sitemap lib keeps only the origin of `hostname`, so when the site is served
+  // under a sub-path (GitHub Pages), prefix each url with the base by hand.
+  sitemap: {
+    hostname: new URL(HOSTNAME).origin,
+    transformItems: (items) =>
+      items.map((i) => ({ ...i, url: BASE + i.url.replace(/^\//, '') })),
+  },
 
   // The d2 sources live under docs/diagrams/ next to the rendered SVGs; its
   // README is tooling notes. _snippets holds reusable @include partials. Neither
