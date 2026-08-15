@@ -19,7 +19,7 @@ repositories {
 dependencies {
     // ──────────────────────────────────────────────────────────────────────
     // This is the only line you need to serve VGI functions from Java.
-    implementation("farm.query:vgi:0.1.0")
+    implementation("farm.query:vgi:0.26.1")
     // ──────────────────────────────────────────────────────────────────────
 
     // A logging backend. VGI uses SLF4J; pick any binding you like.

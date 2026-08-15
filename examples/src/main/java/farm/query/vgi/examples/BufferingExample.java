@@ -86,7 +86,7 @@ public final class BufferingExample implements TableBufferingFunction {
         ReplayProducer(TableBufferingFinalizeParams params) { super(params); }
 
         @Override public void produceTick(OutputCollector out, CallContext ctx) {
-            List<FunctionStorage.LogEntry> rows = storage.stateLogScan(NS, KEY, afterId, 1);
+            List<FunctionStorage.LogEntry> rows = storage().stateLogScan(NS, KEY, afterId, 1);
             if (rows.isEmpty()) { out.finish(); return; }
             FunctionStorage.LogEntry e = rows.get(0);
             VectorSchemaRoot full = BatchUtil.readSingleBatch(e.value(), Allocators.root());
